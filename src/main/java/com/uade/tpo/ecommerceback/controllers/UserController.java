@@ -9,6 +9,7 @@ import com.uade.tpo.ecommerceback.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,11 +38,13 @@ public class UserController {
     }
 
     @GetMapping("/clientes")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Usuario>> getAllClientes() {
         return ResponseEntity.ok(userService.findAllClientes());
     }
 
     @DeleteMapping("/delete/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();

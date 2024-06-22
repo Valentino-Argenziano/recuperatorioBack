@@ -16,36 +16,37 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+        private final JwtAuthenticationFilter jwtAuthFilter;
+        private final AuthenticationProvider authenticationProvider;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers("/api/v1/auth/login").permitAll()
-                        .requestMatchers("/api/v1/auth/register").permitAll()
-                        .requestMatchers("/api/v1/auth/user/change").permitAll()
-                        .requestMatchers("/categories/create").hasRole("ADMIN")
-                        .requestMatchers("/descuento/create").hasRole("ADMIN")
-                        .requestMatchers("/producto/create").hasRole("ADMIN") // Cambio de VENDEDOR a ADMIN
-                        .requestMatchers("/producto/edit").hasRole("ADMIN") // Nueva regla para editar productos
-                        .requestMatchers("/producto/delete").hasRole("ADMIN") // Nueva regla para eliminar productos
-                        .requestMatchers("/user/clientes").hasRole("ADMIN") // Nueva regla para ver usuarios clientes
-                        .requestMatchers("/user/delete/{userId}").hasRole("ADMIN") // Nueva regla para eliminar usuarios
-                        .requestMatchers("/shoppingCart/crear").hasRole("CLIENTE")
-                        .requestMatchers("/categories").permitAll()
-                        .requestMatchers("/categories/{categoryId}").permitAll()
-                        .requestMatchers("/ping").permitAll()
-                        .requestMatchers("/producto/all").permitAll()
-                        .requestMatchers("/producto/categoria/{idCategoria}").permitAll()
-                        .requestMatchers("/producto/{id}").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(
-                        sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+                return httpSecurity
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .authorizeHttpRequests(authRequest -> authRequest
+                                                .requestMatchers("/api/v1/auth/login").permitAll()
+                                                .requestMatchers("/api/v1/auth/register").permitAll()
+                                                .requestMatchers("/api/v1/auth/user/change").permitAll()
+                                                .requestMatchers("/categories/create").hasRole("ADMIN")
+                                                .requestMatchers("/descuento/create").hasRole("ADMIN")
+                                                .requestMatchers("/producto/create").hasRole("ADMIN")
+                                                .requestMatchers("/producto/edit").hasRole("ADMIN")
+                                                .requestMatchers("/producto/delete").hasRole("ADMIN")
+                                                .requestMatchers("/api/v1/auth/clientes").hasRole("ADMIN")
+                                                .requestMatchers("/api/v1/auth/delete/{userId}").hasRole("ADMIN")
+                                                .requestMatchers("/shoppingCart/crear").hasRole("CLIENTE")
+                                                .requestMatchers("/categories").permitAll()
+                                                .requestMatchers("/categories/{categoryId}").permitAll()
+                                                .requestMatchers("/ping").permitAll()
+                                                .requestMatchers("/producto/all").permitAll()
+                                                .requestMatchers("/producto/categoria/{idCategoria}").permitAll()
+                                                .requestMatchers("/producto/{id}").permitAll()
+                                                .anyRequest().authenticated())
+                                .sessionManagement(
+                                                sessionManager -> sessionManager
+                                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authenticationProvider(authenticationProvider)
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                                .build();
+        }
 }
