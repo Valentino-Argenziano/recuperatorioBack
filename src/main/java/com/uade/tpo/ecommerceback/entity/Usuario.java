@@ -38,8 +38,8 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String contrasenia;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Compra> compra;
+    // @OneToMany(mappedBy = "usuario")
+    // private List<Compra> compra;
 
     @Enumerated(EnumType.STRING)
     Rol rol;
@@ -52,16 +52,19 @@ public class Usuario implements UserDetails {
     @Column(columnDefinition = "boolean default true")
     boolean enabled;
 
-    public void changeAccountStatus(boolean finalStatus){
+    public void changeAccountStatus(boolean finalStatus) {
         setEnabled(finalStatus);
     }
-    public void changeExpiredAccount(boolean finalStatus){
+
+    public void changeExpiredAccount(boolean finalStatus) {
         setExpiredAccount(finalStatus);
     }
-    public void changeAccountLocked(boolean finalStatus){
+
+    public void changeAccountLocked(boolean finalStatus) {
         setExpiredAccount(finalStatus);
     }
-    public void changeExpiredCredentials(boolean finalStatus){
+
+    public void changeExpiredCredentials(boolean finalStatus) {
         setExpiredAccount(finalStatus);
     }
 

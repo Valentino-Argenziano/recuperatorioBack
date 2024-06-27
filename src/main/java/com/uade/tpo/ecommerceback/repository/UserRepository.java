@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Usuario, Long> {
-    // Método para encontrar un usuario por su correo electrónico
     Optional<Usuario> findByMail(String email);
 
     // Método para obtener todos los usuarios con el rol 'CLIENTE'
-    @Query("SELECT u FROM Usuario u WHERE u.rol.nombre = 'CLIENTE'")
+    @Query("SELECT u FROM Usuario u WHERE u.rol = 'ROLE_CLIENTE'")
     List<Usuario> findAllClientes();
 }
